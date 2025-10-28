@@ -1,0 +1,27 @@
+Package: acutis
+Type: Package
+Title: Analytical Comparative Utilities To Interpret Statistics
+Version: 0.0.2
+Authors@R: 
+    person("Connor", "Burruss", 
+           email = "cburru2@gmail.com", 
+           role = c("aut", "cre"))
+Description: Provides useful tools for facilitating statistical analysis 
+    of data products. Includes functions for aiding in the munging 
+    and manipulation of standard data tables.
+License: MIT + file LICENSE
+Encoding: UTF-8
+Imports:
+    dplyr,
+    stringr,
+    lubridate,
+    tibble,
+    rlang
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.3.3
+Suggests: 
+    knitr,
+    rmarkdown,
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3
+VignetteBuilder: knitr
