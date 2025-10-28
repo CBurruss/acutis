@@ -1,6 +1,6 @@
 # acutis
 
-`acutis` is an `R` package designed to provide useful tools for facilitating statistical analysis of data products. It utilizes the following functions for aiding in the munging and manipulation of standard data tables:
+`acutis` is an `R` package designed to provide useful tools for facilitating statistical analysis of data products. It provides the following functions for aiding in the munging and manipulation of standard data tables:
  - `affiche()` —  displays an aesthetic table; from the French *affiche* to display
  - `count_na()` — generates a count table of missing values by column
  - `count_table()` — generates a standard count table for a given column
