@@ -144,7 +144,7 @@ affiche <- function(df,
   }
 
   if (!is.null(rownames(df)) && !any(names(df) == " ")) {
-    df <- tibble::rownames_to_column(df, var = " ")
+    df <- tibble::rownames_to_column(df, var = "row")
   }
 
   border <- switch(theme,
@@ -176,8 +176,33 @@ affiche <- function(df,
   )
   col_names <- names(df_display)
 
+  # Create type abbreviations
+  type_map <- c(
+    "integer" = "int",
+    "numeric" = "num",
+    "character" = "str",
+    "logical" = "bool",
+    "factor" = "fct",
+    "Date" = "date",
+    "POSIXct" = "dttm",
+    "POSIXlt" = "dttm"
+  )
+  
+  # Get column types with abbreviations
+  col_types <- sapply(df, function(col) {
+    type <- class(col)[1]
+    abbrev <- type_map[type]
+    if (is.na(abbrev)) abbrev <- type
+    tolower(abbrev)
+  })
+  
+  # Apply italic formatting to types
+  italic <- "\033[3m"
+  col_types_display <- paste0(italic, col_types, reset)
+
   col_widths <- sapply(seq_along(col_names), function(i) {
     max(display_width(col_names[i]),
+        display_width(col_types[i]),
         sapply(df_display[[i]], display_width),
         na.rm = TRUE)
   })
@@ -215,7 +240,26 @@ affiche <- function(df,
     }), collapse = "")
   )
 
-  data_rows <- sapply(1:nrow(df_display), function(i) {  # nolint
+  type_row <- paste0(
+    border$v,
+    paste0(sapply(seq_along(col_types_display), function(i) {
+      content <- col_types_display[i]
+      width <- col_widths[i]
+      pad_total <- width - display_width(col_types[i])
+      pad_left <- switch(align,
+        "left" = 0,
+        "center" = floor(pad_total / 2),
+        "right" = pad_total
+      )
+      paste0(" ",
+             strrep(" ", pad_left),
+             content,
+             strrep(" ", pad_total - pad_left),
+             " ", border$v)
+    }), collapse = "")
+  )
+
+  data_rows <- sapply(1:nrow(df_display), function(i) {
     paste0(
       border$v,
       paste0(sapply(seq_along(col_names), function(j) {
@@ -239,6 +283,7 @@ affiche <- function(df,
 
   cat(top_line, "\n")
   cat(header, "\n")
+  cat(type_row, "\n")
   cat(mid_line, "\n")
   cat(paste0(data_rows, collapse = "\n"), "\n")
   cat(bot_line, "\n")

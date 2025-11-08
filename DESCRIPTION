@@ -1,7 +1,7 @@
 Package: acutis
 Type: Package
 Title: Analytical Comparative Utilities To Interpret Statistics
-Version: 0.0.2
+Version: 0.1.0
 Authors@R: 
     person("Connor", "Burruss", 
            email = "cburru2@gmail.com", 
